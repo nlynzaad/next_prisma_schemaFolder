@@ -1,0 +1,8 @@
+model Job {
+    id          Int       @id @unique @default(autoincrement())
+    description String
+    company     Company   @relation(fields: [companyId], references: [id])
+    companyId   Int
+    applicant   Applicant @relation(fields: [applicantId], references: [id])
+    applicantId Int
+}

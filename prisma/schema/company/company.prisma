@@ -1,0 +1,5 @@
+model Company {
+	id Int @id @default(autoincrement()) @unique
+	name String
+	jobs Job[]
+}

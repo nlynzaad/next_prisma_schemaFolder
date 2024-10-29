@@ -1,0 +1,5 @@
+model Applicant {
+    id   Int    @id @unique @default(autoincrement())
+    name String
+    jobs Job[]
+}
