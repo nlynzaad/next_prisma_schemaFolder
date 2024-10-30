@@ -1,8 +1,10 @@
 model Job {
-    id          Int       @id @unique @default(autoincrement())
+    id          String    @id @default(dbgenerated("gen_random_uuid()"))
     description String
-    company     Company   @relation(fields: [companyId], references: [id])
-    companyId   Int
-    applicant   Applicant @relation(fields: [applicantId], references: [id])
-    applicantId Int
+    company     Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+    companyId   String
+    applicantId String
+    Applicant   Applicant @relation(fields: [applicantId], references: [id])
+
+    @@map("job")
 }

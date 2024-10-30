@@ -1,5 +1,40 @@
 model Applicant {
-    id   Int    @id @unique @default(autoincrement())
-    name String
-    jobs Job[]
+    id            String   @id @default(dbgenerated("gen_random_uuid()"))
+    userId        String   @unique
+    firstName     String
+    lastName      String
+    phoneNumber   String
+    preferredRole String
+    dateofBirth   DateTime
+
+    address           Json
+    resumeUrl         String
+    profilePictureUrl String
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+
+    user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+    jobApplications Job[]
+    applicantRating ApplicantRating[]
+
+    @@map("applicant")
+}
+
+model ApplicantRating {
+    id      String @id @default(dbgenerated("gen_random_uuid()"))
+    jobId   String
+    rating  Int
+    comment String
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+
+    applicantId String
+    ratedById   String
+
+    applicant Applicant         @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+    ratedBy   CompanyTeamMember @relation(fields: [ratedById], references: [id], onDelete: Cascade)
+
+    @@map("applicant-rating")
 }

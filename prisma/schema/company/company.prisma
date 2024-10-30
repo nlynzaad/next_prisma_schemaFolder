@@ -1,5 +1,54 @@
 model Company {
-	id Int @id @default(autoincrement()) @unique
-	name String
-	jobs Job[]
+    id       String  @id @default(dbgenerated("gen_random_uuid()"))
+    name     String
+    imageUrl String
+    stripeId String?
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+
+    jobs               Job[]
+    companyProfile     CompanyProfile?
+    companyTeamMembers CompanyTeamMember[]
+
+    @@map("company")
+}
+
+model CompanyProfile {
+    id           String @id @default(dbgenerated("gen_random_uuid()"))
+    aboutUs      String
+    mission      String
+    vision       String
+    values       String
+    locationInfo Json
+    logoUrl      String
+
+    awardsInfo String
+
+    contactInfo     Json
+    socialMediaInfo Json
+    imageGallery    String[]
+
+    companyId String  @unique
+    company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime
+    updatedAt DateTime? @updatedAt
+}
+
+model CompanyTeamMember {
+    id        String @id @default(dbgenerated("gen_random_uuid()"))
+    userId    String @unique
+    firstName String
+    lastName  String
+
+    phoneNumber String
+
+    companyId String
+    company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+    user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+    applicantRating ApplicantRating[]
+
+    @@map("company_team_member")
 }
